@@ -14,21 +14,6 @@ import java.util.Map;
 public class LoginDataSource implements LoginRepository {
     @Autowired
     JdbcTemplate jdbcTemplate;
-
-    /*@Override
-    public UserModel getUser(String userId, String password) {
-        String sql = "SELECT * FROM users WHERE user_id = ? AND password = ?";
-        List<Map<String, Object>> records = jdbcTemplate.queryForList(sql, userId, password);
-        //if(records.isEmpty()) return UserModel.empty();
-        return toModel(records.get(0));
-    }*/
-
-    /*@Override
-    public void updateSessionId(String userId, String sessionId) {
-        String sql = "UPDATE users SET session_id = ? WHERE user_id = ?";
-        jdbcTemplate.update(sql,sessionId, userId);
-    }*/
-
     @Override
     public void updateSessionId(UserModel user) {
         String sql = "UPDATE users SET session_id = ? WHERE user_id = ? AND password = ?";
@@ -39,18 +24,12 @@ public class LoginDataSource implements LoginRepository {
                 user.getPassword()
                 );
     }
-
-
-
     @Override
     public UserModel checkId(String userId, String sessionId) {
         String sql = "SELECT * FROM users WHERE user_id = ? AND session_id = ?";
         List<Map<String, Object>> records = jdbcTemplate.queryForList(sql, userId, sessionId);
         return toModel(records.get(0));
     }
-
-
-
 
     private UserModel toModel(Map<String, Object> record) {
         return new UserModel(

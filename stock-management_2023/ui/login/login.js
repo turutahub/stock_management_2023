@@ -6,36 +6,39 @@ async function login(event) {
         userId: formData.get("userId"),
         password: formData.get("password")
     }
-    const response = await fetch(`http://localhost:8080/login/${user.userId}/${user.password}`,{
+    const response = await fetch(`http://localhost:8080/login`,{
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(user)
+    });
+
+    const sessionData = new Array();
+    sessionData.push(user.userId, await response.text())
+    $.cookie("sessionData", sessionData, {domain: "127.0.0.1", path: "/", expires: 1})
+
+    check(sessionData);
+}
+
+async function check(sessionData){
+    const response = await fetch(`http://localhost:8080/login/check/${sessionData[0]}/${sessionData[1]}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json"
         },
     });
     if(!response.ok) {
-        //console.error(await response.json());
-        console.log("error");
+        console.error(await response.json());
+        console.log("error")
+        document.getElementById("messageBox").innerHTML = "ログイン失敗"
+        setTimeout("deleteMessage()", 1500);
     } else {
-        //console.log("accept");
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        var randStr = '';
-        for (i=0;i<32;i++) {
-            randStr += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-
-        fetch(`http://localhost:8080/login/${user.userId}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(randStr)
-        })
-
-        const sessionData = []
-        sessionData.push(user.userId,randStr)
-
-        $.cookie("session", sessionData, {domain: "127.0.0.1", path: "/"})
-
+        console.log("OK")
+        location.href = `http://125.26.15.242:9005/th/Home`
     }
-    //location.href = `http://127.0.0.1:5500/app.html?userid=` + encodeURIComponent(user.userId);
+}
+
+function deleteMessage() {
+    document.getElementById("messageBox").innerHTML = ""
 }
