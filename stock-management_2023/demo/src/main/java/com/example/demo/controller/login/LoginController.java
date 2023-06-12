@@ -1,6 +1,5 @@
 package com.example.demo.controller.login;
 
-import com.example.demo.controller.login.request.LoginRequest;
 import com.example.demo.service.GenerateSessionId;
 import com.example.demo.model.UserModel;
 import com.example.demo.service.LoginService;
@@ -13,19 +12,6 @@ public class LoginController {
     private final LoginService service;
     private final GenerateSessionId sessionId;
 
-    /*@GetMapping(value ="/{userId}/{password}", produces = "application/json")
-    @ResponseStatus(HttpStatus.OK)
-    public String get(@PathVariable String userId, @PathVariable String password) {
-        service.getUser(userId, password);
-        return "accept";
-    }*/
-
-    /*@PutMapping(value = "/{userId}", produces = "application/json")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void update(@PathVariable String userId, @RequestBody LoginRequest request) {
-        service.updateSessionId(userId, request.sessionId());
-    }*/
-
     @PutMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public String update(@RequestBody LoginRequest request) {
@@ -35,7 +21,6 @@ public class LoginController {
         service.updateSessionId(user);
         return user.getSessionId();
     }
-
 
     @GetMapping(value = "/check/{userId}/{sessionId}", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)

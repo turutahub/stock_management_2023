@@ -3,14 +3,6 @@ package com.example.demo.service;
 import org.springframework.stereotype.Service;
 @Service
 public class GenerateSessionId {
-    /*private Random r = new Random();
-    private String alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-    private String str = "aaaaaaaaaaaaa";
-    public String generateSessionId() {
-        for (int i = 0; i < 32; i++) {
-            str = str + alphabet.charAt(r.nextInt(alphabet.length()));}
-        return str;
-    }*/
     public static final String NUM     = "0123456789";
     public static final String ALPHA_L = "abcdefghijklmnopqrstuvwxyz";
     public static final String ALPHA_U = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
